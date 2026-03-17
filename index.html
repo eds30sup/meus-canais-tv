@@ -6,9 +6,9 @@
     <title>TV AO VIVO</title>
 
     <style>
+        /* Ajuste para garantir que o corpo ocupe 100% sem travar a rolagem interna */
         body { margin: 0; background: #0a0a0a; font-family: Arial, sans-serif; color: #ffffff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        /* CABEÇALHO */
         .fixo-topo { flex-shrink: 0; z-index: 1000; background: #000; padding-bottom: 5px; }
         
         .topo { 
@@ -18,7 +18,6 @@
             border: 1px solid rgba(255, 215, 0, 0.3); text-transform: uppercase; letter-spacing: 2px; 
         }
 
-        /* ÁREA DO PLAYER - FUNDO TECNOLÓGICO CORRIGIDO */
         .player-area { 
             width: 100%; height: 35vh; 
             position: relative; 
@@ -27,7 +26,6 @@
             background-color: #050505;
         }
         
-        /* Camada da Grade: Z-INDEX 0 (Fica atrás de tudo) */
         .player-area::before {
             content: '';
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -40,14 +38,12 @@
             pointer-events: none;
         }
 
-        /* Vídeo e Iframe: Z-INDEX 1 (Cobrem a grade quando ativos) */
         video, iframe { 
             width: 100%; height: 100%; border: 0; display: none; 
             position: absolute; z-index: 1; top: 0; left: 0; 
             background: #000; 
         }
 
-        /* CAMADA DE DESBLOQUEIO: Z-INDEX 999 (Sempre no topo) */
         #camadaPop {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 999; 
@@ -70,15 +66,21 @@
             border-color: transparent transparent transparent #000;
         }
 
-        /* LISTAGEM */
-        .conteudo-rolavel { flex-grow: 1; overflow-y: auto; padding-bottom: 50px; -webkit-overflow-scrolling: touch; }
+        /* CORREÇÃO ROLAGEM: Ajustado para permitir scroll total até o fim */
+        .conteudo-rolavel { 
+            flex: 1; 
+            overflow-y: scroll; 
+            padding-bottom: 100px; /* Espaço extra no final */
+            -webkit-overflow-scrolling: touch; 
+        }
         
+        /* CORREÇÃO CATEGORIA: Removido o sticky que travava na tela */
         .categoria { 
             background: linear-gradient(135deg, #1f6fb2 0%, #0d3d68 100%); 
             padding: 12px; font-size: 14px; font-weight: bold; color: #FFD700; 
             text-align: center; margin: 15px 12px 8px 12px; border-radius: 12px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.6); border: 1px solid rgba(255, 215, 0, 0.2);
-            position: sticky; top: 5px; z-index: 10; text-transform: uppercase;
+            text-transform: uppercase;
         }
 
         .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 5px 12px 20px 12px; }
@@ -88,7 +90,7 @@
             text-align: center; color: #FFD700; cursor: pointer; 
             border: 1px solid #333; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; min-height: 80px; 
-            position: relative; overflow: hidden; transition: 0.3s;
+            position: relative; overflow: hidden; transition: 0.2s;
         }
 
         .canal.ativo { background: #FFD700 !important; border: 2px solid #fff; }
@@ -220,10 +222,19 @@
         }
     }
 
+    // CORREÇÃO POPUP: Tenta abrir em janela minimalista (oculta endereço em alguns sistemas)
     function gerenciarJanela() {
-        window.open(linkAtual, '_blank');
+        const largura = 800;
+        const altura = 600;
+        const esquerda = (screen.width - largura) / 2;
+        const topo = (screen.height - altura) / 2;
+        
+        window.open(linkAtual, 'Player_Externo', 
+            `toolbar=no, location=no, directories=no, status=no, menubar=no, 
+            scrollbars=no, resizable=no, copyhistory=no, width=${largura}, 
+            height=${altura}, top=${topo}, left=${esquerda}`);
+            
         document.getElementById('camadaPop').style.display = 'none';
-        window.focus();
     }
 
     window.onload = carregarDados;
