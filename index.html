@@ -6,11 +6,10 @@
     <title>TV AO VIVO</title>
 
     <style>
-        /* AJUSTE 1: Mudado overflow de 'hidden' para 'auto' para permitir a rolagem natural do site */
-        body { margin: 0; background: #0a0a0a; font-family: Arial, sans-serif; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; overflow-y: auto; }
+        body { margin: 0; background: #0a0a0a; font-family: Arial, sans-serif; color: #ffffff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         /* CABEÇALHO */
-        .fixo-topo { flex-shrink: 0; z-index: 1000; background: #000; position: sticky; top: 0; }
+        .fixo-topo { flex-shrink: 0; z-index: 1000; background: #000; }
         .topo { background: #0f4c81; padding: 12px; text-align: center; font-size: 18px; font-weight: bold; color: #FFD700; border-bottom: 2px solid #1f6fb2; }
         
         /* ÁREA DO PLAYER */
@@ -38,14 +37,13 @@
         }
 
         /* LISTAGEM */
-        .conteudo-rolavel { flex-grow: 1; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
+        .conteudo-rolavel { flex-grow: 1; overflow-y: auto; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
         
-        /* AJUSTE 2: Removido 'sticky' e 'top:0' para que a categoria suba junto com a rolagem */
         .categoria { 
             background: linear-gradient(90deg, #1f6fb2, #0f4c81); 
             padding: 12px 15px; font-size: 15px; font-weight: bold; 
             color: #FFD700; border-left: 6px solid #FFD700; 
-            z-index: 10; 
+            position: sticky; top: 0; z-index: 10; 
         }
 
         .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 12px; }
@@ -164,7 +162,7 @@
              onclick="abrir(this,'https://dlstreams.top/stream/stream-919.php')">
             <div class="overlay-card">
                 <div class="status-jogo"></div>
-                <span class="nome-txt">ARSENAL vs BAYERN LEVERKUSEN</span>
+                <span class="nome-txt">ARSENAL vs BAYERNLEVERKUSEN</span>
             </div>
         </div>
 
@@ -185,6 +183,7 @@
     var hls = null;
     var linkAtual = "";
 
+    // ATUALIZAÇÃO AUTOMÁTICA DE STATUS (AO VIVO / AMANHÃ / ENCERRADO)
     function atualizarStatus() {
         const agora = new Date();
         document.querySelectorAll('.canal[data-hora]').forEach(canal => {
@@ -208,18 +207,22 @@
     atualizarStatus();
     setInterval(atualizarStatus, 30000);
 
+    // FUNÇÃO PARA TROCAR DE CANAL
     function abrir(elemento, link) {
         linkAtual = link;
         var video = document.getElementById("video");
         var iframe = document.getElementById("iframePlayer");
         var camada = document.getElementById("camadaPop");
 
+        // UI: Marca o canal selecionado
         document.querySelectorAll(".canal").forEach(c => c.classList.remove("ativo"));
         elemento.classList.add("ativo");
 
+        // Limpa instâncias anteriores
         if (hls) { hls.destroy(); hls = null; }
 
         if (link.includes(".m3u8")) {
+            // Player Nativo M3U8
             camada.style.display = "none";
             iframe.style.display = "none";
             video.style.display = "block";
@@ -230,17 +233,22 @@
                 hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
             } else { video.src = link; video.play(); }
         } else {
+            // Iframe Externo (com trava de pop-up)
             video.pause();
             video.style.display = "none";
             iframe.style.display = "block";
             iframe.src = link;
-            camada.style.display = "flex";
+            camada.style.display = "flex"; // Mostra o Botão Play
         }
     }
 
+    // LÓGICA DO POP-UP
     function gerenciarJanela() {
+        // Abre o link em nova aba (satisfaz o site de origem)
         window.open(linkAtual, '_blank');
+        // Remove a trava visual do nosso site
         document.getElementById('camadaPop').style.display = 'none';
+        // Tenta retornar o foco
         window.focus();
     }
 </script>
