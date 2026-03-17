@@ -6,94 +6,78 @@
     <title>TV AO VIVO</title>
 
     <style>
-        /* BASE E ROLAGEM */
         body { margin: 0; background: #0a0a0a; font-family: Arial, sans-serif; color: #ffffff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        .fixo-topo { flex-shrink: 0; z-index: 1000; background: #000; padding-bottom: 5px; }
+        /* CABEÇALHO */
+        .fixo-topo { flex-shrink: 0; z-index: 1000; background: #000; }
+        .topo { background: #0f4c81; padding: 12px; text-align: center; font-size: 18px; font-weight: bold; color: #FFD700; border-bottom: 2px solid #1f6fb2; }
         
-        .topo { 
-            background: linear-gradient(135deg, #1f6fb2 0%, #0d3d68 100%); 
-            padding: 15px; text-align: center; font-size: 18px; font-weight: bold; color: #FFD700; 
-            margin: 10px 12px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            border: 1px solid rgba(255, 215, 0, 0.3); text-transform: uppercase; letter-spacing: 2px; 
-        }
+        /* ÁREA DO PLAYER */
+        .player-area { width: 100%; height: 35vh; background: black; position: relative; border-bottom: 3px solid #FFD700; }
+        video, iframe { width: 100%; height: 100%; border: 0; display: block; }
+        iframe { display: none; background: #000; }
 
-        /* ÁREA DO PLAYER COM FUNDO TECNOLÓGICO */
-        .player-area { 
-            width: 100%; height: 35vh; position: relative; border-bottom: 3px solid #FFD700; 
-            overflow: hidden; background-color: #050505;
-        }
-        
-        .player-area::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at center, rgba(31, 111, 178, 0.2) 0%, transparent 75%),
-                linear-gradient(rgba(255, 215, 0, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 215, 0, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 25px 25px, 25px 25px;
-            z-index: 0; pointer-events: none;
-        }
-
-        video, iframe { 
-            width: 100%; height: 100%; border: 0; display: none; 
-            position: absolute; z-index: 1; top: 0; left: 0; background: #000; 
-        }
-
-        /* BOTÃO PLAY CENTRAL (TRAVA VISUAL) */
+        /* BOTÃO DE DESBLOQUEIO (PLAY) */
         #camadaPop {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 999; background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            display: none; cursor: pointer; align-items: center; justify-content: center;
+            z-index: 999; background: rgba(0,0,0,0.7); display: none;
+            cursor: pointer; align-items: center; justify-content: center;
         }
-        
         .btn-play-central {
-            width: 85px; height: 85px; background: #FFD700; border-radius: 50%;
+            width: 80px; height: 80px; background: #FFD700; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 30px rgba(255,215,0,0.7);
+            box-shadow: 0 0 30px rgba(255,215,0,0.5);
+            transition: transform 0.2s;
         }
-        
+        .btn-play-central:active { transform: scale(0.9); }
         .btn-play-central::after {
-            content: ''; display: block; margin-left: 10px;
-            border-style: solid; border-width: 20px 0 20px 32px;
+            content: ''; display: block; margin-left: 8px;
+            border-style: solid; border-width: 18px 0 18px 30px;
             border-color: transparent transparent transparent #000;
         }
 
-        /* CONTEÚDO E LISTAGEM (CATEGORIA NÃO FIXA) */
-        .conteudo-rolavel { flex: 1; overflow-y: auto; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
+        /* LISTAGEM */
+        .conteudo-rolavel { flex-grow: 1; overflow-y: auto; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
         
         .categoria { 
-            background: linear-gradient(135deg, #1f6fb2 0%, #0d3d68 100%); 
-            padding: 12px; font-size: 14px; font-weight: bold; color: #FFD700; 
-            text-align: center; margin: 15px 12px 8px 12px; border-radius: 12px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.6); border: 1px solid rgba(255, 215, 0, 0.2);
-            text-transform: uppercase;
+            background: linear-gradient(90deg, #1f6fb2, #0f4c81); 
+            padding: 12px 15px; font-size: 15px; font-weight: bold; 
+            color: #FFD700; border-left: 6px solid #FFD700; 
+            position: sticky; top: 0; z-index: 10; 
         }
 
-        .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 5px 12px 20px 12px; }
+        .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 12px; }
 
         .canal { 
-            background: #1a1a1a; border-radius: 10px; padding: 12px 5px; 
+            background: #2a2a2a; border-radius: 10px; padding: 12px 5px; 
             text-align: center; color: #FFD700; cursor: pointer; 
-            border: 1px solid #333; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; min-height: 100px; transition: 0.2s;
+            border: 1px solid #444; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; min-height: 110px; 
+            position: relative; overflow: hidden; transition: 0.3s;
         }
 
-        .canal.ativo { background: #FFD700 !important; border: 2px solid #fff; }
-        .canal.ativo .nome-txt { color: #000 !important; }
+        .canal-jogo { background-size: cover; background-position: center; border: 1px solid #ffffff33; }
+        
+        .overlay-card { 
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+            background: rgba(0, 0, 0, 0.65); display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; padding: 5px; z-index: 1; 
+        }
 
-        /* CARDS DE JOGOS */
-        .canal-jogo { background-size: cover; background-position: center; min-height: 110px; position: relative; overflow: hidden; }
-        .overlay-card { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.65); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5px; z-index: 1; }
+        /* ESTADO ATIVO (CLICADO) */
+        .canal.ativo { background: #FFD700 !important; border: 2px solid #fff; transform: scale(0.95); }
+        .canal.ativo .nome-txt, .canal.ativo .status-jogo { color: #000 !important; }
 
-        .nome-txt { z-index: 2; font-weight: bold; text-shadow: 1px 1px 2px #000; font-size: 12px; margin-top: 5px; text-align: center; }
-        .status-jogo { font-size: 11px; font-weight: bold; margin-bottom: 5px; z-index: 2; }
+        /* TEXTOS */
+        .nome-txt { z-index: 2; font-weight: bold; text-shadow: 1px 1px 2px #000; font-size: 13px; margin-top: 5px; }
+        .status-jogo { font-size: 13px; font-weight: bold; margin-bottom: 5px; min-height: 16px; z-index: 2; }
 
+        /* ANIMAÇÃO AO VIVO */
         .live-on { color: #ff4444; display: flex; align-items: center; gap: 4px; }
-        .dot { height: 6px; width: 6px; background-color: #ff4444; border-radius: 50%; animation: pulse 1.5s infinite; }
+        .dot { height: 7px; width: 7px; background-color: #ff4444; border-radius: 50%; animation: pulse 1.5s infinite; }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        @media (max-width: 480px) { .player-area { height: 30vh; } }
+        @media (max-width: 480px) { .player-area { height: 30vh; } .lista { grid-template-columns: repeat(3, 1fr); gap: 8px; } }
     </style>
 </head>
 <body>
@@ -152,17 +136,44 @@
 
     <div class="categoria">JOGOS AGENDADOS / AO VIVO</div>
     <div class="lista">
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T14:45" onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">SPORTING CP vs BODØ/GLIMT</span></div>
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T14:45" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">SPORTING CP vs BODØ/GLIMT</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-398.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">CHELSEA vs PSG</span></div>
+
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T17:00" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-398.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">CHELSEA vs PSG</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-919.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">ARSENAL vs BAYERN</span></div>
+
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T17:00" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-919.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">ARSENAL vs BAYERN LEVERKUSEN</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">CITY vs REAL MADRID</span></div>
+
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T17:00" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">MANCHESTER vs REAL MADRID</span>
+            </div>
         </div>
     </div>
 </div>
@@ -172,9 +183,10 @@
     var hls = null;
     var linkAtual = "";
 
+    // ATUALIZAÇÃO AUTOMÁTICA DE STATUS (AO VIVO / AMANHÃ / ENCERRADO)
     function atualizarStatus() {
         const agora = new Date();
-        document.querySelectorAll('.canal-jogo').forEach(canal => {
+        document.querySelectorAll('.canal[data-hora]').forEach(canal => {
             const rawData = canal.getAttribute('data-hora');
             const dataInicio = new Date(rawData);
             const dataFim = new Date(dataInicio.getTime() + (2.5 * 60 * 60 * 1000));
@@ -186,46 +198,59 @@
             } else if (agora > dataFim) {
                 statusDiv.innerHTML = '<span style="color:#888888">Encerrado</span>';
             } else {
-                statusDiv.innerHTML = `<span style="color:#00FF00">Inicia às ${horaExibicao}</span>`;
+                const ehAmanha = dataInicio.getDate() > agora.getDate();
+                statusDiv.innerHTML = `<span style="color:#00FF00">${ehAmanha ? 'Amanhã' : 'Inicia às'} ${horaExibicao}</span>`;
             }
         });
     }
 
+    atualizarStatus();
+    setInterval(atualizarStatus, 30000);
+
+    // FUNÇÃO PARA TROCAR DE CANAL
     function abrir(elemento, link) {
         linkAtual = link;
         var video = document.getElementById("video");
         var iframe = document.getElementById("iframePlayer");
         var camada = document.getElementById("camadaPop");
 
+        // UI: Marca o canal selecionado
         document.querySelectorAll(".canal").forEach(c => c.classList.remove("ativo"));
         elemento.classList.add("ativo");
 
+        // Limpa instâncias anteriores
         if (hls) { hls.destroy(); hls = null; }
 
         if (link.includes(".m3u8")) {
+            // Player Nativo M3U8
             camada.style.display = "none";
             iframe.style.display = "none";
             video.style.display = "block";
             if (Hls.isSupported()) {
-                hls = new Hls(); hls.loadSource(link); hls.attachMedia(video);
+                hls = new Hls();
+                hls.loadSource(link);
+                hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
             } else { video.src = link; video.play(); }
         } else {
-            video.pause(); video.style.display = "none";
+            // Iframe Externo (com trava de pop-up)
+            video.pause();
+            video.style.display = "none";
             iframe.style.display = "block";
             iframe.src = link;
-            camada.style.display = "flex"; // Mostra o Play central
+            camada.style.display = "flex"; // Mostra o Botão Play
         }
     }
 
+    // LÓGICA DO POP-UP
     function gerenciarJanela() {
+        // Abre o link em nova aba (satisfaz o site de origem)
         window.open(linkAtual, '_blank');
+        // Remove a trava visual do nosso site
         document.getElementById('camadaPop').style.display = 'none';
+        // Tenta retornar o foco
         window.focus();
     }
-
-    atualizarStatus();
-    setInterval(atualizarStatus, 30000);
 </script>
 </body>
 </html>
