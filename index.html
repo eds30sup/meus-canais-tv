@@ -6,6 +6,7 @@
     <title>TV AO VIVO</title>
 
     <style>
+        /* BASE E ROLAGEM */
         body { margin: 0; background: #0a0a0a; font-family: Arial, sans-serif; color: #ffffff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
         .fixo-topo { flex-shrink: 0; z-index: 1000; background: #000; padding-bottom: 5px; }
@@ -17,85 +18,90 @@
             border: 1px solid rgba(255, 215, 0, 0.3); text-transform: uppercase; letter-spacing: 2px; 
         }
 
+        /* ÁREA DO PLAYER COM FUNDO TECNOLÓGICO */
         .player-area { 
-            width: 100%; height: 35vh; 
-            position: relative; 
-            border-bottom: 3px solid #FFD700; 
-            overflow: hidden;
-            background-color: #050505;
+            width: 100%; height: 35vh; position: relative; border-bottom: 3px solid #FFD700; 
+            overflow: hidden; background-color: #050505;
         }
         
         .player-area::before {
-            content: '';
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: 
                 radial-gradient(circle at center, rgba(31, 111, 178, 0.2) 0%, transparent 75%),
                 linear-gradient(rgba(255, 215, 0, 0.05) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 215, 0, 0.05) 1px, transparent 1px);
             background-size: 100% 100%, 25px 25px, 25px 25px;
-            z-index: 0; 
-            pointer-events: none;
+            z-index: 0; pointer-events: none;
         }
 
         video, iframe { 
             width: 100%; height: 100%; border: 0; display: none; 
-            position: absolute; z-index: 1; top: 0; left: 0; 
-            background: #000; 
+            position: absolute; z-index: 1; top: 0; left: 0; background: #000; 
         }
 
-        /* Botão central de Play (Fica por cima de tudo) */
+        /* BOTÃO PLAY CENTRAL (TRAVA VISUAL) */
         #camadaPop {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 999; 
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
+            z-index: 999; background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             display: none; cursor: pointer; align-items: center; justify-content: center;
         }
-
+        
         .btn-play-central {
-            width: 80px; height: 80px; background: #FFD700; border-radius: 50%;
+            width: 85px; height: 85px; background: #FFD700; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 20px rgba(255,215,0,0.5);
+            box-shadow: 0 0 30px rgba(255,215,0,0.7);
         }
-
+        
         .btn-play-central::after {
-            content: ''; display: block; margin-left: 5px;
-            border-style: solid; border-width: 15px 0 15px 25px;
+            content: ''; display: block; margin-left: 10px;
+            border-style: solid; border-width: 20px 0 20px 32px;
             border-color: transparent transparent transparent #000;
         }
 
-        .conteudo-rolavel { flex: 1; overflow-y: scroll; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
+        /* CONTEÚDO E LISTAGEM (CATEGORIA NÃO FIXA) */
+        .conteudo-rolavel { flex: 1; overflow-y: auto; padding-bottom: 100px; -webkit-overflow-scrolling: touch; }
         
         .categoria { 
             background: linear-gradient(135deg, #1f6fb2 0%, #0d3d68 100%); 
             padding: 12px; font-size: 14px; font-weight: bold; color: #FFD700; 
             text-align: center; margin: 15px 12px 8px 12px; border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6); border: 1px solid rgba(255, 215, 0, 0.2);
             text-transform: uppercase;
         }
 
         .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 5px 12px 20px 12px; }
 
         .canal { 
-            background: #1a1a1a; border-radius: 10px; padding: 8px 5px; 
+            background: #1a1a1a; border-radius: 10px; padding: 12px 5px; 
             text-align: center; color: #FFD700; cursor: pointer; 
             border: 1px solid #333; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; min-height: 80px; transition: 0.2s;
+            align-items: center; justify-content: center; min-height: 100px; transition: 0.2s;
         }
 
         .canal.ativo { background: #FFD700 !important; border: 2px solid #fff; }
         .canal.ativo .nome-txt { color: #000 !important; }
 
-        .nome-txt { font-weight: bold; font-size: 11px; margin-top: 5px; line-height: 1.1; }
+        /* CARDS DE JOGOS */
+        .canal-jogo { background-size: cover; background-position: center; min-height: 110px; position: relative; overflow: hidden; }
+        .overlay-card { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.65); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5px; z-index: 1; }
 
+        .nome-txt { z-index: 2; font-weight: bold; text-shadow: 1px 1px 2px #000; font-size: 12px; margin-top: 5px; text-align: center; }
+        .status-jogo { font-size: 11px; font-weight: bold; margin-bottom: 5px; z-index: 2; }
+
+        .live-on { color: #ff4444; display: flex; align-items: center; gap: 4px; }
+        .dot { height: 6px; width: 6px; background-color: #ff4444; border-radius: 50%; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
         @media (max-width: 480px) { .player-area { height: 30vh; } }
     </style>
 </head>
 <body>
 
 <div class="fixo-topo">
-    <div class="topo">TV AO VIVO</div>
+    <div class="topo">TV AO VIVO PREMIUM</div>
     <div class="player-area">
-        <div id="camadaPop" onclick="gerenciarClique()">
+        <div id="camadaPop" onclick="gerenciarJanela()">
             <div class="btn-play-central"></div>
         </div>
         <video id="video" controls autoplay playsinline crossorigin="anonymous"></video>
@@ -105,68 +111,121 @@
 
 <div class="conteudo-rolavel">
     <div class="categoria">CANAIS DE ESPORTES 24H</div>
-    <div id="lista-24h" class="lista"></div>
+    <div class="lista">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-81.php')">
+            <img style="width:55px" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg">
+            <span class="nome-txt">ESPN</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-82.php')">
+            <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/ESPN2_logo.svg/1280px-ESPN2_logo.svg.png">
+            <span class="nome-txt">ESPN 2</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-83.php')">
+            <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/ESPN3_logo.svg/1280px-ESPN3_logo.svg.png">
+            <span class="nome-txt">ESPN 3</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-85.php')">
+            <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/ESPN_4_logo.svg/1280px-ESPN_4_logo.svg.png">
+            <span class="nome-txt">ESPN 4</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-93.php')">
+            <img style="width:80px" src="https://upload.wikimedia.org/wikipedia/commons/2/26/SporTV_2021.png">
+            <span class="nome-txt">SPORTV</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-88.php')">
+            <img style="width:85px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Premiere_%282017%29_logo.png/960px-Premiere_%282017%29_logo.png">
+            <span class="nome-txt">PREMIERE</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-89.php')">
+            <img style="width:75px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Combate_logo.svg/1280px-Combate_logo.svg.png">
+            <span class="nome-txt">COMBATE</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-275.php')">
+            <img style="width:70px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/BandSports_logo.svg/1280px-BandSports_logo.svg.png">
+            <span class="nome-txt">BANDSPORTS</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-87.php')">
+            <img style="width:55px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/TNT_Logo_2016.svg/1280px-TNT_Logo_2016.svg.png">
+            <span class="nome-txt">TNT</span>
+        </div>
+    </div>
+
     <div class="categoria">JOGOS AGENDADOS / AO VIVO</div>
-    <div id="lista-jogos" class="lista"></div>
+    <div class="lista">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T14:45" onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
+            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">SPORTING CP vs BODØ/GLIMT</span></div>
+        </div>
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-398.php')">
+            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">CHELSEA vs PSG</span></div>
+        </div>
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-919.php')">
+            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">ARSENAL vs BAYERN</span></div>
+        </div>
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
+            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">CITY vs REAL MADRID</span></div>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 <script>
     var hls = null;
-    var urlAtual = "";
+    var linkAtual = "";
 
-    async function carregarDados() {
-        try {
-            const response = await fetch('canais.json?v=' + Date.now());
-            const dados = await response.json();
-            
-            const container24h = document.getElementById('lista-24h');
-            dados.canais24h.forEach(c => {
-                const item = document.createElement('div');
-                item.className = 'canal';
-                item.onclick = function() { abrir(this, c.link); };
-                item.innerHTML = `<img style="width:${c.largura}" src="${c.logo}"><span class="nome-txt">${c.nome}</span>`;
-                container24h.appendChild(item);
-            });
-            // ... (Resto do código de carregar jogos igual)
-        } catch (e) { console.error(e); }
+    function atualizarStatus() {
+        const agora = new Date();
+        document.querySelectorAll('.canal-jogo').forEach(canal => {
+            const rawData = canal.getAttribute('data-hora');
+            const dataInicio = new Date(rawData);
+            const dataFim = new Date(dataInicio.getTime() + (2.5 * 60 * 60 * 1000));
+            const statusDiv = canal.querySelector('.status-jogo');
+            const horaExibicao = rawData.split('T')[1];
+
+            if (agora >= dataInicio && agora <= dataFim) {
+                statusDiv.innerHTML = '<span class="live-on"><span class="dot"></span> AO VIVO</span>';
+            } else if (agora > dataFim) {
+                statusDiv.innerHTML = '<span style="color:#888888">Encerrado</span>';
+            } else {
+                statusDiv.innerHTML = `<span style="color:#00FF00">Inicia às ${horaExibicao}</span>`;
+            }
+        });
     }
 
     function abrir(elemento, link) {
-        urlAtual = link;
+        linkAtual = link;
         var video = document.getElementById("video");
         var iframe = document.getElementById("iframePlayer");
         var camada = document.getElementById("camadaPop");
-        
+
         document.querySelectorAll(".canal").forEach(c => c.classList.remove("ativo"));
         elemento.classList.add("ativo");
+
+        if (hls) { hls.destroy(); hls = null; }
 
         if (link.includes(".m3u8")) {
             camada.style.display = "none";
             iframe.style.display = "none";
             video.style.display = "block";
-            // Lógica HLS aqui...
+            if (Hls.isSupported()) {
+                hls = new Hls(); hls.loadSource(link); hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
+            } else { video.src = link; video.play(); }
         } else {
-            video.pause();
-            video.style.display = "none";
+            video.pause(); video.style.display = "none";
             iframe.style.display = "block";
             iframe.src = link;
             camada.style.display = "flex"; // Mostra o Play central
         }
     }
 
-    function gerenciarClique() {
-        // Abre a propaganda/aba externa
-        var novaAba = window.open(urlAtual, '_blank');
-        
-        // Tenta focar de volta na sua página imediatamente
-        window.focus();
-        
-        // Esconde o botão de play para o usuário ver o canal carregando atrás
+    function gerenciarJanela() {
+        window.open(linkAtual, '_blank');
         document.getElementById('camadaPop').style.display = 'none';
+        window.focus();
     }
 
-    window.onload = carregarDados;
+    atualizarStatus();
+    setInterval(atualizarStatus, 30000);
 </script>
 </body>
 </html>
