@@ -1,0 +1,84 @@
+{
+  "canais24h": [
+    {
+      "nome": "ESPN",
+      "link": "https://dlstreams.top/stream/stream-81.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg",
+      "largura": "55px"
+    },
+    {
+      "nome": "ESPN 2",
+      "link": "https://dlstreams.top/stream/stream-82.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/ESPN2_logo.svg/1280px-ESPN2_logo.svg.png",
+      "largura": "65px"
+    },
+    {
+      "nome": "ESPN 3",
+      "link": "https://dlstreams.top/stream/stream-83.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/ESPN3_logo.svg/1280px-ESPN3_logo.svg.png",
+      "largura": "65px"
+    },
+    {
+      "nome": "ESPN 4",
+      "link": "https://dlstreams.top/stream/stream-85.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/ESPN_4_logo.svg/1280px-ESPN_4_logo.svg.png",
+      "largura": "65px"
+    },
+    {
+      "nome": "SPORTV",
+      "link": "https://dlstreams.top/stream/stream-78.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/2/26/SporTV_2021.png",
+      "largura": "80px"
+    },
+    {
+      "nome": "PREMIERE",
+      "link": "https://dlstreams.top/stream/stream-88.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Premiere_%282017%29_logo.png/960px-Premiere_%282017%29_logo.png",
+      "largura": "85px"
+    },
+    {
+      "nome": "COMBATE",
+      "link": "https://dlstreams.top/stream/stream-89.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Combate_logo.svg/1280px-Combate_logo.svg.png",
+      "largura": "75px"
+    },
+    {
+      "nome": "BANDSPORTS",
+      "link": "https://dlstreams.top/stream/stream-275.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/BandSports_logo.svg/1280px-BandSports_logo.svg.png",
+      "largura": "70px"
+    },
+    {
+      "nome": "TNT",
+      "link": "https://dlstreams.top/stream/stream-87.php",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/TNT_Logo_2016.svg/1280px-TNT_Logo_2016.svg.png",
+      "largura": "55px"
+    }
+  ],
+  "jogos": [
+    {
+      "nome": "SPORTING CP vs BODØ/GLIMT",
+      "link": "https://dlstreams.top/stream/stream-393.php",
+      "horario": "2026-03-17T14:45",
+      "fundo": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+      "nome": "CHELSEA vs PSG",
+      "link": "https://dlstreams.top/stream/stream-398.php",
+      "horario": "2026-03-17T17:00",
+      "fundo": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+      "nome": "ARSENAL vs BAYERN LEVERKUSEN",
+      "link": "https://dlstreams.top/stream/stream-919.php",
+      "horario": "2026-03-17T17:00",
+      "fundo": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=1000"
+    },
+    {
+      "nome": "MANCHESTER vs REAL MADRID",
+      "link": "https://dlstreams.top/stream/stream-393.php",
+      "horario": "2026-03-17T17:00",
+      "fundo": "https://images.unsplash.com/photo-1518091043644-c1d445bcc97a?auto=format&fit=crop&q=80&w=1000"
+    }
+  ]
+}
