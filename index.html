@@ -173,27 +173,21 @@
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T14:45" onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">SPORTING CP vs BODØ/GLIMT</span></div>
         </div>
-
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-398.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">CHELSEA vs PSG</span></div>
         </div>
-        
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T16:45" onclick="abrir(this,'https://dlstreams.top/stream/stream-36.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">WATFORD vs WREXHAM</span></div>
         </div>
-
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-919.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">ARSENAL vs BAYERN LEVERKUSEN</span></div>
         </div>
-
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-36.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">BARNSLEY vs WIGAN ATHLETIC</span></div>
         </div>
-        
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T19:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-387.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">LANÚS vs NEWELL'S OLD BOYS</span></div>
         </div>
-
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">MANCHESTER CITY vs REAL MADRID</span></div>
         </div>
@@ -263,33 +257,22 @@
         }
     }
 
-    // FUNÇÃO GERENCIADORA COM BLOQUEIO REFORÇADO PARA CHROME
+    // NOVA FUNÇÃO: SIMULA NAVEGAÇÃO REAL PARA ENGANAR O CHROME
     function gerenciarJanela() {
-        var win = window.open("", "_blank");
+        var form = document.createElement("form");
+        form.method = "GET";
+        form.action = linkAtual;
+        form.target = "_blank"; 
         
-        if (win) {
-            win.document.write(`
-                <html>
-                <head><title>Stream Player</title></head>
-                <body style="margin:0; background:#000; overflow:hidden;">
-                    <iframe 
-                        src="${linkAtual}" 
-                        style="width:100%; height:100%; border:0;" 
-                        sandbox="allow-scripts allow-same-origin"
-                        allow="autoplay; encrypted-media"
-                    ></iframe>
-                </body>
-                </html>
-            `);
-            win.document.close(); // Sela o documento para evitar injeção de pop-ups posteriores
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
 
-            // Remove o foco da janela de anúncio e volta para o site principal
-            setTimeout(function() {
-                window.focus();
-            }, 100);
-        }
-        
         document.getElementById('camadaPop').style.display = 'none';
+        
+        setTimeout(function() {
+            window.focus();
+        }, 200);
     }
 </script>
 </body>
