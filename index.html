@@ -263,27 +263,33 @@
         }
     }
 
-    // NOVA FUNÇÃO COM BLOQUEIO DE SEGURANÇA (SANDBOX)
+    // FUNÇÃO GERENCIADORA COM BLOQUEIO REFORÇADO PARA CHROME
     function gerenciarJanela() {
-        // Abre uma aba em branco primeiro
         var win = window.open("", "_blank");
         
-        // Insere um HTML dentro dessa aba que "força" o bloqueio do site original
-        // Isso simula o comportamento que você teve no arquivo local
-        win.document.write(`
-            <html>
-            <body style="margin:0; background:#000;">
-                <iframe 
-                    src="${linkAtual}" 
-                    style="width:100%; height:100%; border:0;" 
-                    sandbox="allow-scripts allow-same-origin"
-                ></iframe>
-            </body>
-            </html>
-        `);
+        if (win) {
+            win.document.write(`
+                <html>
+                <head><title>Stream Player</title></head>
+                <body style="margin:0; background:#000; overflow:hidden;">
+                    <iframe 
+                        src="${linkAtual}" 
+                        style="width:100%; height:100%; border:0;" 
+                        sandbox="allow-scripts allow-same-origin"
+                        allow="autoplay; encrypted-media"
+                    ></iframe>
+                </body>
+                </html>
+            `);
+            win.document.close(); // Sela o documento para evitar injeção de pop-ups posteriores
+
+            // Remove o foco da janela de anúncio e volta para o site principal
+            setTimeout(function() {
+                window.focus();
+            }, 100);
+        }
         
         document.getElementById('camadaPop').style.display = 'none';
-        window.focus();
     }
 </script>
 </body>
