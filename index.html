@@ -25,17 +25,17 @@
         
         .topo { 
             background: #0f4c81; 
-            margin: 0 15px 10px 15px; 
+            margin: 0 15px 10px 15px; /* Afastado das laterais */
             padding: 12px; 
             text-align: center; 
             font-size: 18px; 
             font-weight: bold; 
             color: #FFD700; 
-            border-radius: 12px; 
+            border-radius: 12px; /* Arredondado moderno */
             border-bottom: 2px solid #1f6fb2;
         }
         
-        /* ÁREA DO PLAYER */
+        /* ÁREA DO PLAYER (Largura Total para não travar a rolagem) */
         .player-area { width: 100%; height: 35vh; background: black; position: relative; border-bottom: 3px solid #FFD700; }
         video, iframe { width: 100%; height: 100%; border: 0; display: block; }
         iframe { display: none; background: #000; }
@@ -56,13 +56,15 @@
             border-color: transparent transparent transparent #000;
         }
 
+        /* LISTAGEM TOTALMENTE FLUIDA */
         .conteudo-rolavel { 
             flex-grow: 1; 
             overflow-y: auto; 
-            padding-bottom: 120px; 
+            padding-bottom: 120px; /* Garante que o último canal apareça totalmente */
             -webkit-overflow-scrolling: touch; 
         }
         
+        /* CATEGORIAS CENTRALIZADAS, ARREDONDADAS E SEM LINHA */
         .categoria { 
             background: linear-gradient(90deg, #0f4c81, #1f6fb2); 
             padding: 12px 15px; 
@@ -70,13 +72,14 @@
             font-weight: bold; 
             color: #FFD700; 
             text-align: center;
-            margin: 15px 15px 5px 15px; 
-            border-radius: 50px; 
+            margin: 15px 15px 5px 15px; /* Afastado das laterais */
+            border-radius: 50px; /* Estilo pílula moderno */
             text-transform: uppercase;
         }
 
         .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 12px; }
 
+        /* CANAIS */
         .canal { 
             background: #1a1a1a; 
             border-radius: 12px; 
@@ -170,26 +173,74 @@
 
     <div class="categoria">JOGOS AGENDADOS / AO VIVO</div>
     <div class="lista" id="lista-jogos">
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T14:45" onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">SPORTING CP vs BODØ/GLIMT</span></div>
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T14:45" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">SPORTING CP vs BODØ/GLIMT</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-398.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">CHELSEA vs PSG</span></div>
+
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T17:00" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-398.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">CHELSEA vs PSG</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T16:45" onclick="abrir(this,'https://dlstreams.top/stream/stream-36.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">WATFORD vs WREXHAM</span></div>
+        
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T16:45" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-36.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">WATFORD vs WREXHAM</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-919.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">ARSENAL vs BAYERN LEVERKUSEN</span></div>
+
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T17:00" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-919.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">ARSENAL vs BAYERN LEVERKUSEN</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-36.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">BARNSLEY vs WIGAN ATHLETIC</span></div>
+
+          <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T17:00" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-36.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">BARNSLEY vs WIGAN ATHLETIC</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T19:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-387.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">LANÚS vs NEWELL'S OLD BOYS</span></div>
+        
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T19:00" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-387.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">LANÚS vs NEWELL'S OLD BOYS</span>
+            </div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
-            <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">MANCHESTER CITY vs REAL MADRID</span></div>
+
+        <div class="canal canal-jogo" 
+             style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" 
+             data-hora="2026-03-17T17:00" 
+             onclick="abrir(this,'https://dlstreams.top/stream/stream-393.php')">
+            <div class="overlay-card">
+                <div class="status-jogo"></div>
+                <span class="nome-txt">MANCHESTER CITY vs REAL MADRID</span>
+            </div>
         </div>
     </div>
 </div>
@@ -199,6 +250,7 @@
     var hls = null;
     var linkAtual = "";
 
+    // FUNÇÃO QUE ORGANIZA AUTOMATICAMENTE
     function ordenarJogos() {
         const container = document.getElementById('lista-jogos');
         const jogos = Array.from(container.getElementsByClassName('canal-jogo'));
@@ -226,6 +278,7 @@
         });
     }
 
+    // Chama a ordenação assim que carrega
     ordenarJogos();
     atualizarStatus();
     setInterval(atualizarStatus, 30000);
@@ -257,22 +310,10 @@
         }
     }
 
-    // NOVA FUNÇÃO: SIMULA NAVEGAÇÃO REAL PARA ENGANAR O CHROME
     function gerenciarJanela() {
-        var form = document.createElement("form");
-        form.method = "GET";
-        form.action = linkAtual;
-        form.target = "_blank"; 
-        
-        document.body.appendChild(form);
-        form.submit();
-        document.body.removeChild(form);
-
+        window.open(linkAtual, '_blank');
         document.getElementById('camadaPop').style.display = 'none';
-        
-        setTimeout(function() {
-            window.focus();
-        }, 200);
+        window.focus();
     }
 </script>
 </body>
