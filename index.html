@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>TV AO VIVO PREMIUM</title>
+
+    <style>
+        body { margin: 0; background: #0a0a0a; font-family: Arial, sans-serif; color: #ffffff; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* CABEÇALHO ESTILO CARD */
+        .fixo-topo { flex-shrink: 0; z-index: 1000; background: #000; padding-bottom: 5px; }
+        
+        .topo { 
+            background: linear-gradient(135deg, #1f6fb2 0%, #0d3d68 100%); 
+            padding: 15px; text-align: center; font-size: 18px; font-weight: bold; color: #FFD700; 
+            margin: 10px 12px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255, 215, 0, 0.3); text-transform: uppercase; letter-spacing: 2px; 
+        }
+
+        /* ÁREA DO PLAYER COM FUNDO TECNOLÓGICO */
+        .player-area { 
+            width: 100%; height: 35vh; 
+            position: relative; 
+            border-bottom: 3px solid #FFD700; 
+            overflow: hidden;
+            background-color: #050505;
+        }
+        
+        /* Pseudo-elemento para o efeito de Grade */
+        .player-area::before {
+            content: '';
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at center, rgba(31, 111, 178, 0.2) 0%, transparent 75%),
+                linear-gradient(rgba(255, 215, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 25px 25px, 25px 25px;
+            z-index: 2; /* Fica acima do vídeo mas atrás do botão pop */
+            pointer-events: none;
+        }
+
+        /* Vídeo/Iframe escondidos inicialmente para não mostrar erro */
+        video, iframe { width: 100%; height: 100%; border: 0; display: none; position: absolute; z-index: 1; top: 0; left: 0; }
+        iframe { background: transparent; }
+
+        /* CAMADA DE DESBLOQUEIO (GLASSMORPHISM) */
+        #camadaPop {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 999; 
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(8px);
+            display: none; cursor: pointer; align-items: center; justify-content: center;
+        }
+        
+        .btn-play-central {
+            width: 85px; height: 85px; background: #FFD700; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 30px rgba(255,215,0,0.7);
+            animation: pulse-border 2s infinite;
+        }
+        
+        .btn-play-central::after {
+            content: ''; display: block; margin-left: 10px;
+            border-style: solid; border-width: 20px 0 20px 32px;
+            border-color: transparent transparent transparent #000;
+        }
+
+        /* LISTAGEM ROLÁVEL */
+        .conteudo-rolavel { flex-grow: 1; overflow-y: auto; padding-bottom: 50px; -webkit-overflow-scrolling: touch; }
+        
+        /* CATEGORIAS */
+        .categoria { 
+            background: linear-gradient(135deg, #1f6fb2 0%, #0d3d68 100%); 
+            padding: 12px; font-size: 15px; font-weight: bold; color: #FFD700; 
+            text-align: center; margin: 15px 12px 8px 12px; border-radius: 12px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.6); border: 1px solid rgba(255, 215, 0, 0.2);
+            position: sticky; top: 5px; z-index: 10; text-transform: uppercase;
+        }
+
+        .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 5px 12px 20px 12px; }
+
+        /* CARDS DE CANAIS */
+        .canal { 
+            background: #1a1a1a; border-radius: 10px; padding: 8px 5px; 
+            text-align: center; color: #FFD700; cursor: pointer; 
+            border: 1px solid #333; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; min-height: 80px; 
+            position: relative; overflow: hidden; transition: 0.3s;
+        }
+
+        .canal.ativo { background: #FFD700 !important; border: 2px solid #fff; }
+        .canal.ativo .nome-txt { color: #000 !important; }
+
+        /* JOGOS */
+        .canal-jogo { background-size: cover; background-position: center; min-height: 100px; }
+        .overlay-card { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 5px; z-index: 1; }
+
+        .nome-txt { z-index: 2; font-weight: bold; text-shadow: 1px 1px 2px #000; font-size: 12px; margin-top: 5px; line-height: 1.1; }
+        .status-jogo { font-size: 11px; font-weight: bold; margin-bottom: 4px; z-index: 2; }
+
+        .live-on { color: #ff4444; display: flex; align-items: center; gap: 4px; }
+        .dot { height: 6px; width: 6px; background-color: #ff4444; border-radius: 50%; animation: pulse 1.5s infinite; }
+
+        /* ANIMAÇÕES */
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+
+        @media (max-width: 480px) { .player-area { height: 30vh; } }
+    </style>
+</head>
+<body>
+
+<div class="fixo-topo">
+    <div class="topo">TV AO VIVO</div>
+    <div class="player-area">
+        <div id="camadaPop" onclick="gerenciarJanela()">
+            <div class="btn-play-central"></div>
+        </div>
+        <video id="video" controls autoplay playsinline crossorigin="anonymous"></video>
+        <iframe id="iframePlayer" allowfullscreen scrolling="no"></iframe>
+    </div>
+</div>
+
+<div class="conteudo-rolavel">
+    <div class="categoria">CANAIS DE ESPORTES 24H</div>
+    <div id="lista-24h" class="lista">
+        </div>
+
+    <div class="categoria">JOGOS AGENDADOS / AO VIVO</div>
+    <div id="lista-jogos" class="lista">
+        </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script>
+    var hls = null;
+    var linkAtual = "";
+
+    async function carregarDados() {
+        try {
+            // "Date.now" força o navegador a buscar sempre a lista mais nova no servidor
+            const response = await fetch('canais.json?v=' + Date.now());
+            const dados = await response.json();
+            
+            // Renderiza Canais 24h
+            const container24h = document.getElementById('lista-24h');
+            if (dados.canais24h) {
+                dados.canais24h.forEach(c => {
+                    const item = document.createElement('div');
+                    item.className = 'canal';
+                    item.onclick = function() { abrir(this, c.link); };
+                    item.innerHTML = `<img style="width:${c.largura}" src="${c.logo}"><span class="nome-txt">${c.nome}</span>`;
+                    container24h.appendChild(item);
+                });
+            }
+
+            // Renderiza Jogos
+            const containerJogos = document.getElementById('lista-jogos');
+            if (dados.jogos) {
+                dados.jogos.forEach(j => {
+                    const item = document.createElement('div');
+                    item.className = 'canal canal-jogo';
+                    item.style.backgroundImage = `url('${j.fundo}')`;
+                    item.setAttribute('data-hora', j.horario);
+                    item.onclick = function() { abrir(this, j.link); };
+                    item.innerHTML = `<div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">${j.nome}</span></div>`;
+                    containerJogos.appendChild(item);
+                });
+            }
+
+            atualizarStatus();
+        } catch (e) { 
+            console.error("Erro crítico ao carregar dados do JSON:", e);
+            alert("Não foi possível carregar a lista de canais. Certifique-se de que o arquivo 'canais.json' está na mesma pasta do HTML e o formato está correto.");
+        }
+    }
+
+    function atualizarStatus() {
+        const agora = new Date();
+        document.querySelectorAll('.canal-jogo').forEach(canal => {
+            const rawData = canal.getAttribute('data-hora');
+            if (!rawData) return;
+            const dataInicio = new Date(rawData);
+            const dataFim = new Date(dataInicio.getTime() + (2.5 * 60 * 60 * 1000));
+            const statusDiv = canal.querySelector('.status-jogo');
+            
+            if (agora >= dataInicio && agora <= dataFim) {
+                statusDiv.innerHTML = '<span class="live-on"><span class="dot"></span> AO VIVO</span>';
+            } else if (agora > dataFim) {
+                statusDiv.innerHTML = '<span style="color:#888888">Encerrado</span>';
+            } else {
+                const horaExibicao = rawData.split('T')[1];
+                statusDiv.innerHTML = `<span style="color:#00FF00">Hoje às ${horaExibicao}</span>`;
+            }
+        });
+    }
+
+    function abrir(elemento, link) {
+        linkAtual = link;
+        var video = document.getElementById("video");
+        var iframe = document.getElementById("iframePlayer");
+        var camada = document.getElementById("camadaPop");
+        
+        // UI: Marca o canal selecionado
+        document.querySelectorAll(".canal").forEach(c => c.classList.remove("ativo"));
+        elemento.classList.add("ativo");
+
+        // Limpa instâncias anteriores
+        if (hls) { hls.destroy(); hls = null; }
+
+        if (link.includes(".m3u8")) {
+            // Player Nativo M3U8
+            camada.style.display = "none";
+            iframe.style.display = "none";
+            video.style.display = "block"; // Mostra o vídeo só quando for carregar
+            if (Hls.isSupported()) {
+                hls = new Hls();
+                hls.loadSource(link);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
+            } else { video.src = link; video.play(); }
+        } else {
+            // Iframe Externo (com trava de pop-up)
+            video.pause();
+            video.style.display = "none";
+            iframe.style.display = "block"; // Mostra o iframe só quando for carregar
+            iframe.src = link;
+            camada.style.display = "flex"; // Mostra o Botão Play
+        }
+    }
+
+    function gerenciarJanela() {
+        window.open(linkAtual, '_blank');
+        document.getElementById('camadaPop').style.display = 'none';
+        window.focus();
+    }
+
+    // Inicia tudo
+    window.onload = carregarDados;
+    setInterval(atualizarStatus, 30000);
+</script>
+</body>
+</html>
