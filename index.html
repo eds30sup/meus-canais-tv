@@ -72,14 +72,16 @@
             --connected-color: #FFD700; --disconnected-color: #ffffff;
         }
 
+        /* CAMADA DE PROTEÇÃO ANTI-POPUP */
         #camadaPop {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 999; background: rgba(0,0,0,0.7); display: none;
+            z-index: 999; background: rgba(0,0,0,0.6); display: none;
             cursor: pointer; align-items: center; justify-content: center;
         }
         .btn-play-central {
             width: 70px; height: 70px; background: #FFD700; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
         .btn-play-central::after {
             content: ''; border-style: solid; border-width: 15px 0 15px 25px;
@@ -89,7 +91,6 @@
         /* CONTEÚDO ROLÁVEL */
         .conteudo-rolavel { flex-grow: 1; overflow-y: auto; padding-bottom: 120px; -webkit-overflow-scrolling: touch; }
         
-        /* CATEGORIAS EM ESTILO CARD CENTRALIZADO */
         .categoria { 
             background: #2A1B3D; 
             padding: 12px 15px; 
@@ -151,7 +152,7 @@
             <div class="btn-play-central"></div>
         </div>
         <video id="video" controls autoplay playsinline crossorigin="anonymous"></video>
-        <iframe id="iframePlayer" allowfullscreen scrolling="no" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+        <iframe id="iframePlayer" allowfullscreen scrolling="no"></iframe>
     </div>
     <div class="opcoes-player" id="seletorPlayers" style="display:none;">
         <div class="btn-opt active" onclick="mudarPlayer(this, 'casting')">Opção 1 (Cast)</div>
@@ -166,31 +167,31 @@
             <img style="width:55px" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg">
             <span class="nome-txt">ESPN</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-82.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-82.php')">
             <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/ESPN2_logo.svg/1280px-ESPN2_logo.svg.png">
             <span class="nome-txt">ESPN 2</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-83.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-83.php')">
             <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/ESPN3_logo.svg/1280px-ESPN3_logo.svg.png">
             <span class="nome-txt">ESPN 3</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-85.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-85.php')">
             <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/ESPN_4_logo.svg/1280px-ESPN_4_logo.svg.png">
             <span class="nome-txt">ESPN 4</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-78.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-78.php.php')">
             <img style="width:80px" src="https://upload.wikimedia.org/wikipedia/commons/2/26/SporTV_2021.png">
             <span class="nome-txt">SPORTV</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-79.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-79.php')">
             <img style="width:80px" src="https://upload.wikimedia.org/wikipedia/commons/0/01/SporTV2_2021.png">
             <span class="nome-txt">SPORTV 2</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-80.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-80.php')">
             <img style="width:80px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/SporTV3_2021.png/1280px-SporTV3_2021.png">
             <span class="nome-txt">SPORTV 3</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-88.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-88.php')">
             <img style="width:85px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Premiere_%282017%29_logo.png/960px-Premiere_%282017%29_logo.png">
             <span class="nome-txt">PREMIERE</span>
         </div>
@@ -210,37 +211,37 @@
 
     <div class="categoria">JOGOS AGENDADOS / AO VIVO</div>
     <div class="lista" id="lista-jogos">
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T16:45" onclick="abrir(this,'https://dlstreams.top/casting/stream-109.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T16:45" onclick="abrir(this,'https://dlstreams.top/stream/stream-109.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Southampton vs Norwich City</span></div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T17:00" onclick="abrir(this,'https://dlstreams.top/casting/stream-398.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-398.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Bayern München vs Atalanta</span></div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T17:00" onclick="abrir(this,'https://dlstreams.top/casting/stream-919.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-919.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Tottenham vs Atlético Madrid</span></div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T17:00" onclick="abrir(this,'https://dlstreams.top/casting/stream-87.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-87.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Liverpool vs Galatasaray</span></div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T17:00" onclick="abrir(this,'https://dlstreams.top/casting/stream-35.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T17:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-35.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Milton Keynes vs Colchester</span></div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T19:00" onclick="abrir(this,'https://dlstreams.top/casting/stream-78.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T19:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-78.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Palmeiras vs Botafogo</span></div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T22:00" onclick="abrir(this,'https://dlstreams.top/casting/stream-39.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T22:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-39.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">América vs Philadelphia Union</span></div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T20:00" onclick="abrir(this,'https://dlstreams.top/casting/stream-81.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T20:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-81.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Inter Miami vs Nashville SC</span></div>
         </div>
-         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T23:07" onclick="abrir(this,'https://dlstreams.top/casting/stream-845.php')">
+         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T23:07" onclick="abrir(this,'https://dlstreams.top/stream/stream-845.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Guadalajara vs León</span></div>
         </div>
-         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T22:30" onclick="abrir(this,'https://dlstreams.top/casting/stream-392.php')">
+         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T22:30" onclick="abrir(this,'https://dlstreams.top/stream/stream-392.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Deportivo Cali vs Santa Fe</span></div>
         </div>
-        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T21:30" onclick="abrir(this,'https://dlstreams.top/casting/stream-540.php')">
+        <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T21:30" onclick="abrir(this,'https://dlstreams.top/stream/stream-540.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">Santos vs Internacional</span></div>
         </div>
     </div>
@@ -328,6 +329,8 @@
             iframe.style.display = "block";
             btnCast.style.display = "none";
             iframe.src = linkAtual;
+            
+            // Mostra a camada de proteção para bloquear popups inesperados
             camada.style.display = "flex";
         }
     }
@@ -341,13 +344,13 @@
     }
 
     function gerenciarJanela() {
-        var form = document.createElement("form");
-        form.method = "GET"; form.action = linkAtual; form.target = "_blank";
-        document.body.appendChild(form);
-        form.submit();
-        document.body.removeChild(form);
+        // Removemos o envio do formulário (_blank). 
+        // Agora o clique apenas remove a proteção e foca no vídeo atual.
         document.getElementById('camadaPop').style.display = 'none';
-        setTimeout(function() { window.focus(); }, 150);
+        
+        // Mantém o foco no iframe para garantir a interação
+        var iframe = document.getElementById("iframePlayer");
+        iframe.focus();
     }
 
     ordenarJogos();
