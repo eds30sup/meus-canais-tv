@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>TV AO VIVO</title>
+    <title>TV AO VIVO - EXO STYLE</title>
+    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
 
     <style>
-        /* Melhora a performance da rolagem */
-        * { -webkit-tap-highlight-color: transparent; }
-        
+        /* ESTILO BASE EXO PLAYER */
+        * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         body { 
             margin: 0; 
-            background: #0a0a0a; 
-            font-family: Arial, sans-serif; 
+            background: #000; 
+            font-family: 'Roboto', sans-serif; 
             color: #ffffff; 
             height: 100vh; 
             display: flex; 
@@ -20,25 +20,57 @@
             overflow: hidden; 
         }
         
-        /* CABEÇALHO COM RESPIRO */
+        /* CABEÇALHO */
         .fixo-topo { flex-shrink: 0; z-index: 1000; background: #000; padding-top: 10px; }
-        
         .topo { 
-            background: #0f4c81; 
+            background: #2A1B3D; 
             margin: 0 15px 10px 15px; 
             padding: 12px; 
             text-align: center; 
-            font-size: 18px; 
+            font-size: 16px; 
             font-weight: bold; 
-            color: #FFD700; 
+            color: #FFFFFF; 
             border-radius: 12px; 
-            border-bottom: 2px solid #1f6fb2;
+            border: 1px solid #333;
         }
         
         /* ÁREA DO PLAYER */
-        .player-area { width: 100%; height: 35vh; background: black; position: relative; border-bottom: 3px solid #FFD700; }
+        .player-area { width: 100%; height: 35vh; background: black; position: relative; border-bottom: 2px solid #333; }
         video, iframe { width: 100%; height: 100%; border: 0; display: block; }
         iframe { display: none; background: #000; }
+
+        /* SELETOR DE PLAYERS */
+        .opcoes-player {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            background: #000;
+            border-bottom: 1px solid #222;
+        }
+        .btn-opt {
+            background: #111;
+            color: #888;
+            border: 1px solid #333;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .btn-opt.active {
+            background: #FFD700;
+            color: #000;
+            border-color: #fff;
+        }
+
+        /* BOTÃO CAST */
+        google-cast-launcher {
+            position: absolute; top: 10px; right: 10px; width: 35px; height: 35px;
+            z-index: 1001; display: none; cursor: pointer;
+            --connected-color: #FFD700; --disconnected-color: #ffffff;
+        }
 
         #camadaPop {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -46,69 +78,64 @@
             cursor: pointer; align-items: center; justify-content: center;
         }
         .btn-play-central {
-            width: 80px; height: 80px; background: #FFD700; border-radius: 50%;
+            width: 70px; height: 70px; background: #FFD700; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 30px rgba(255,215,0,0.5);
         }
         .btn-play-central::after {
-            content: ''; display: block; margin-left: 8px;
-            border-style: solid; border-width: 18px 0 18px 30px;
-            border-color: transparent transparent transparent #000;
+            content: ''; border-style: solid; border-width: 15px 0 15px 25px;
+            border-color: transparent transparent transparent #000; margin-left: 5px;
         }
 
-        .conteudo-rolavel { 
-            flex-grow: 1; 
-            overflow-y: auto; 
-            padding-bottom: 120px; 
-            -webkit-overflow-scrolling: touch; 
-        }
+        /* CONTEÚDO ROLÁVEL */
+        .conteudo-rolavel { flex-grow: 1; overflow-y: auto; padding-bottom: 120px; -webkit-overflow-scrolling: touch; }
         
+        /* CATEGORIAS EM ESTILO CARD CENTRALIZADO */
         .categoria { 
-            background: linear-gradient(90deg, #0f4c81, #1f6fb2); 
+            background: #2A1B3D; 
             padding: 12px 15px; 
-            font-size: 14px; 
-            font-weight: bold; 
-            color: #FFD700; 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #FFFFFF; 
             text-align: center;
             margin: 15px 15px 5px 15px; 
-            border-radius: 50px; 
+            border-radius: 12px; 
             text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid #333;
         }
 
-        .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 12px; }
+        .lista { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 10px 15px; }
 
         .canal { 
-            background: #1a1a1a; 
+            background: #4B3A6A; 
             border-radius: 12px; 
             padding: 12px 5px; 
             text-align: center; 
-            color: #FFD700; 
+            color: #eee; 
             cursor: pointer; 
-            border: 1px solid #333; 
+            border: 1px solid #222; 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
-            min-height: 85px; 
+            min-height: 90px; 
             transition: 0.2s;
         }
-        .canal:active { transform: scale(0.95); }
+        .canal.ativo { background: #7F00FF !important; border-color: #FFD700; }
+        .canal.ativo .nome-txt { color: #FFD700 !important; }
 
-        .canal-jogo { background-size: cover; background-position: center; border: 1px solid #ffffff33; position: relative; overflow: hidden; }
+        .canal-jogo { background-size: cover; background-position: center; border: none; position: relative; overflow: hidden; }
         .overlay-card { 
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+            position: absolute; inset: 0;
             background: rgba(0, 0, 0, 0.7); display: flex; flex-direction: column; 
             align-items: center; justify-content: center; padding: 5px; z-index: 1; 
         }
 
-        .canal.ativo { background: #FFD700 !important; border: 2px solid #fff; }
-        .canal.ativo .nome-txt, .canal.ativo .status-jogo { color: #000 !important; }
-
-        .nome-txt { z-index: 2; font-weight: bold; text-shadow: 1px 1px 2px #000; font-size: 12px; margin-top: 5px; }
-        .status-jogo { font-size: 12px; font-weight: bold; margin-bottom: 5px; min-height: 16px; z-index: 2; }
+        .nome-txt { font-weight: 600; text-shadow: 1px 1px 2px #7F00FF; font-size: 11px; margin-top: 8px; }
+        .status-jogo { font-size: 10px; font-weight: bold; margin-bottom: 5px; min-height: 16px; z-index: 2; }
 
         .live-on { color: #ff4444; display: flex; align-items: center; gap: 4px; }
-        .dot { height: 7px; width: 7px; background-color: #ff4444; border-radius: 50%; animation: pulse 1.5s infinite; }
+        .dot { height: 6px; width: 6px; background-color: #ff4444; border-radius: 50%; animation: pulse 1.5s infinite; }
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
         @media (max-width: 480px) { .lista { grid-template-columns: repeat(3, 1fr); gap: 8px; } }
@@ -119,11 +146,16 @@
 <div class="fixo-topo">
     <div class="topo">TV AO VIVO</div>
     <div class="player-area">
+        <google-cast-launcher id="castbutton"></google-cast-launcher>
         <div id="camadaPop" onclick="gerenciarJanela()">
             <div class="btn-play-central"></div>
         </div>
         <video id="video" controls autoplay playsinline crossorigin="anonymous"></video>
         <iframe id="iframePlayer" allowfullscreen scrolling="no"></iframe>
+    </div>
+    <div class="opcoes-player" id="seletorPlayers" style="display:none;">
+        <div class="btn-opt active" onclick="mudarPlayer(this, 'casting')">Opção 1 (Cast)</div>
+        <div class="btn-opt" onclick="mudarPlayer(this, 'plus')">Opção 2 (HD)</div>
     </div>
 </div>
 
@@ -134,23 +166,31 @@
             <img style="width:55px" src="https://upload.wikimedia.org/wikipedia/commons/2/2f/ESPN_wordmark.svg">
             <span class="nome-txt">ESPN</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-82.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-82.php')">
             <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/ESPN2_logo.svg/1280px-ESPN2_logo.svg.png">
             <span class="nome-txt">ESPN 2</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-83.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-83.php')">
             <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/ESPN3_logo.svg/1280px-ESPN3_logo.svg.png">
             <span class="nome-txt">ESPN 3</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-85.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-85.php')">
             <img style="width:65px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/ESPN_4_logo.svg/1280px-ESPN_4_logo.svg.png">
             <span class="nome-txt">ESPN 4</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-93.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-78.php')">
             <img style="width:80px" src="https://upload.wikimedia.org/wikipedia/commons/2/26/SporTV_2021.png">
             <span class="nome-txt">SPORTV</span>
         </div>
-        <div class="canal" onclick="abrir(this,'https://dlstreams.top/stream/stream-88.php')">
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-79.php')">
+            <img style="width:80px" src="https://upload.wikimedia.org/wikipedia/commons/0/01/SporTV2_2021.png">
+            <span class="nome-txt">SPORTV 2</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-80.php')">
+            <img style="width:80px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/SporTV3_2021.png/1280px-SporTV3_2021.png">
+            <span class="nome-txt">SPORTV 3</span>
+        </div>
+        <div class="canal" onclick="abrir(this,'https://dlstreams.top/casting/stream-88.php')">
             <img style="width:85px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Premiere_%282017%29_logo.png/960px-Premiere_%282017%29_logo.png">
             <span class="nome-txt">PREMIERE</span>
         </div>
@@ -173,27 +213,21 @@
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T20:20" onclick="abrir(this,'https://dlstreams.top/stream/stream-392.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">ATL. BUCARAMANGA vs ONCE CALDA</span></div>
         </div>
-
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T21:15" onclick="abrir(this,'https://dlstreams.top/stream/stream-388.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">CENT.CÓRDOBA vs DEP. RIESTRA</span></div>
         </div>
-        
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T21:15" onclick="abrir(this,'https://dlstreams.top/stream/stream-149.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">GIMNASIA MENDOZA VS ESTUDIANTES</span></div>
         </div>
-
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T22:30" onclick="abrir(this,'https://dlstreams.top/stream/stream-392.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">MILLONARIOS vs ATL. NACIONAL</span></div>
         </div>
-        
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T19:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-387.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">LANÚS vs NEWELL'S OLD BOYS</span></div>
         </div>
-
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-18T00:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-66.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">CRUZ AZUL vs MONTERREY</span></div>
         </div>
-        
         <div class="canal canal-jogo" style="background-image: url('https://img.freepik.com/fotos-premium/fotografia-realista-de-um-estadio-de-futebol-moderno-iluminado_747552-3571.jpg');" data-hora="2026-03-17T22:00" onclick="abrir(this,'https://dlstreams.top/stream/stream-66.php')">
             <div class="overlay-card"><div class="status-jogo"></div><span class="nome-txt">ALAJUELENSE vs LOS ANGELES FC</span></div>
         </div>
@@ -204,6 +238,16 @@
 <script>
     var hls = null;
     var linkAtual = "";
+    var baseID = "";
+
+    window.__onGCastApiAvailable = function(isAvailable) {
+        if (isAvailable) {
+            cast.framework.CastContext.getInstance().setOptions({
+                receiverApplicationId: chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID,
+                autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+            });
+        }
+    };
 
     function ordenarJogos() {
         const container = document.getElementById('lista-jogos');
@@ -232,22 +276,25 @@
         });
     }
 
-    ordenarJogos();
-    atualizarStatus();
-    setInterval(atualizarStatus, 30000);
-
     function abrir(elemento, link) {
         linkAtual = link;
         var video = document.getElementById("video");
         var iframe = document.getElementById("iframePlayer");
         var camada = document.getElementById("camadaPop");
+        var seletor = document.getElementById("seletorPlayers");
+        var btnCast = document.getElementById("castbutton");
+
         document.querySelectorAll(".canal").forEach(c => c.classList.remove("ativo"));
         elemento.classList.add("ativo");
+
         if (hls) { hls.destroy(); hls = null; }
+
         if (link.includes(".m3u8")) {
+            seletor.style.display = "none";
             camada.style.display = "none";
             iframe.style.display = "none";
             video.style.display = "block";
+            btnCast.style.display = "block";
             if (Hls.isSupported()) {
                 hls = new Hls();
                 hls.loadSource(link);
@@ -255,42 +302,46 @@
                 hls.on(Hls.Events.MANIFEST_PARSED, function() { video.play(); });
             } else { video.src = link; video.play(); }
         } else {
+            baseID = link.split('/').pop();
+            seletor.style.display = "flex";
+            document.querySelectorAll('.btn-opt').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.btn-opt')[0].classList.add('active');
+            
+            // Define padrão Casting se for do dlstreams
+            if(link.includes("dlstreams.top")){
+                linkAtual = `https://dlstreams.top/casting/${baseID}`;
+            }
+
             video.pause();
             video.style.display = "none";
             iframe.style.display = "block";
-            iframe.src = link;
+            btnCast.style.display = "none";
+            iframe.src = linkAtual;
             camada.style.display = "flex";
         }
     }
 
-    // FUNÇÃO GERENCIADORA COM BLOQUEIO REFORÇADO PARA CHROME
-    function gerenciarJanela() {
-        var win = window.open("", "_blank");
-        
-        if (win) {
-            win.document.write(`
-                <html>
-                <head><title>Stream Player</title></head>
-                <body style="margin:0; background:#000; overflow:hidden;">
-                    <iframe 
-                        src="${linkAtual}" 
-                        style="width:100%; height:100%; border:0;" 
-                        sandbox="allow-scripts allow-same-origin"
-                        allow="autoplay; encrypted-media"
-                    ></iframe>
-                </body>
-                </html>
-            `);
-            win.document.close(); // Sela o documento para evitar injeção de pop-ups posteriores
-
-            // Remove o foco da janela de anúncio e volta para o site principal
-            setTimeout(function() {
-                window.focus();
-            }, 100);
-        }
-        
-        document.getElementById('camadaPop').style.display = 'none';
+    function mudarPlayer(btn, tipo) {
+        document.querySelectorAll('.btn-opt').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        linkAtual = `https://dlstreams.top/${tipo}/${baseID}`;
+        document.getElementById("iframePlayer").src = linkAtual;
+        document.getElementById('camadaPop').style.display = 'flex';
     }
+
+    function gerenciarJanela() {
+        var form = document.createElement("form");
+        form.method = "GET"; form.action = linkAtual; form.target = "_blank";
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+        document.getElementById('camadaPop').style.display = 'none';
+        setTimeout(function() { window.focus(); }, 150);
+    }
+
+    ordenarJogos();
+    atualizarStatus();
+    setInterval(atualizarStatus, 30000);
 </script>
 </body>
 </html>
